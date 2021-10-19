@@ -7,7 +7,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ProductList from './product/ProductList';
 import EmployeeList from './employee/EmployeeList';
 import Main from './ui/Main';
-
+// theme
 const theme = createTheme({
   palette: {
     primary: {
