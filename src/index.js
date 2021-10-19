@@ -1,12 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+//import './index.css';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import ProductList from './product/ProductList';
+import EmployeeList from './employee/EmployeeList';
+import Main from './ui/Main';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#f44336',
+    },
+    secondary: {
+      main: '#F5B7B1',
+    },
+  },
+});
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Switch>
+          <Route path="/product" component={ProductList}/>
+          <Route path="/employee" component={EmployeeList}/>
+          <Route path="/" component={Main}/>
+        </Switch>
+      </Router>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
