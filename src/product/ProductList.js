@@ -9,7 +9,8 @@ import AppMenu from '../ui/AppMenu';
 import ProductAdd from '../product/ProductAdd';
 //import { ThemeProvider } from '@emotion/react';
 export default function ProductList() {
-  const firebaseApp = initializeApp(config);
+  //const firebaseApp = initializeApp(config);
+  initializeApp(config);
   const db = getFirestore();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
