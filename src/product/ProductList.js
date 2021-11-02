@@ -37,6 +37,7 @@ export default function ProductList() {
       const temp = [];
       querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
+        //console.log(doc);
         console.log(doc.id, " => ", doc.data());
         temp.push({desc:doc.data().desc, price:doc.data().price});
       
