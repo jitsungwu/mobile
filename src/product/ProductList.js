@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { Box, Button, CircularProgress, List, ListItem, ListItemText } from '@mui/material';
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+//import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs, query, orderBy } from "firebase/firestore";
 
 import {config} from '../settings/firebaseConfig';
 import AppMenu from '../ui/AppMenu';
@@ -29,7 +30,9 @@ export default function ProductList() {
   useEffect(()=>{
     async function readData() {
       setIsLoading(true);
-      const querySnapshot = await getDocs(collection(db, "product"));
+      //const querySnapshot = await getDocs(collection(db, "product"));
+      const querySnapshot = await getDocs(query(collection(db, "product"), orderBy("desc")));
+      //const querySnapshot = getDocs(collection(db, "product"));
       const temp = [];
       querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
