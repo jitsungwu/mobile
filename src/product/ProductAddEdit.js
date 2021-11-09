@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Button, DialogActions, TextField  } from '@mui/material';
 import { Dialog, DialogTitle,DialogContent  } from '@mui/material';
-import { getFirestore, collection, addDoc, setDoc } from "firebase/firestore";
+import { getFirestore, collection, doc, addDoc, setDoc } from "firebase/firestore";
 export default function ProductAddEdit(props) {
 
   const [product, setProduct] = useState({
@@ -10,7 +10,7 @@ export default function ProductAddEdit(props) {
 
   useEffect(()=>setProduct({...props.product}),[props.product]);
 
-  console.log(props.product.desc);
+  //console.log(props.product);
   const action = !props.product.id ? "新增":"修改";
   //if id is null -> add
   //if id is not null -> edit
@@ -31,7 +31,7 @@ export default function ProductAddEdit(props) {
         console.log(docRef.id);
       }
       else {
-        await setDoc(collection(db,"product",product.id),{
+        await setDoc(doc(db,"product",product.id),{
           desc:product.desc,
           price:parseInt(product.price)
         });

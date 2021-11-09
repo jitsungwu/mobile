@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import { Box, Button, CircularProgress, IconButton, List, ListItem, ListItemText } from '@mui/material';
-import {Edit as EditIcon, Delete as DeleteIcon} from '@mui/icons-material';
+import { Box, CircularProgress, Fab, IconButton, List, ListItem, ListItemText } from '@mui/material';
+import {Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon} from '@mui/icons-material';
 import { getApp, getApps,initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { deleteDoc, doc } from "firebase/firestore";
@@ -47,7 +47,7 @@ export default function ProductList() {
         temp.push({id:doc.id, desc:doc.data().desc, price:doc.data().price});
       
       });
-      console.log(temp);
+      //console.log(temp);
       setProducts([...temp]);
       setIsLoading(false);
     }
@@ -128,8 +128,15 @@ useEffect(readData
        :
       <CircularProgress />
       }
-      
-      <Button variant="contained" color="primary" onClick={addData}>新增</Button>
+      <Fab color="primary" aria-label="新增" onClick={addData}
+          sx={{
+            position: "fixed",
+            bottom: (theme) => theme.spacing(2),
+            right: (theme) => theme.spacing(8)
+          }}
+          >
+        <AddIcon />
+      </Fab> 
       <ProductAddEdit open={open} close={close} product={currentProduct}/>
     </Box>
 
