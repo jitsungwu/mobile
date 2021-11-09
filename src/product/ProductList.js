@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import { Box, Button, CircularProgress, List, ListItem, ListItemText } from '@mui/material';
-import { initializeApp } from "firebase/app";
-//import { getFirestore, collection, getDocs } from "firebase/firestore";
-import { getFirestore, collection, getDocs, query, orderBy } from "firebase/firestore";
+import { Box, Button, CircularProgress, IconButton, List, ListItem, ListItemText } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { getApp, getApps,initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { deleteDoc, doc } from "firebase/firestore";
+//import { getFirestore, collection, getDocs, query, orderBy } from "firebase/firestore";
 
 import {config} from '../settings/firebaseConfig';
 import AppMenu from '../ui/AppMenu';
@@ -10,9 +12,11 @@ import ProductAdd from '../product/ProductAdd';
 //import { ThemeProvider } from '@emotion/react';
 export default function ProductList() {
   //const firebaseApp = initializeApp(config);
-  initializeApp(config);
+  //initializeApp(config);
+  getApps().length === 0 ? initializeApp(config) : getApp();
   const db = getFirestore();
   const [open, setOpen] = useState(false);
+  const [deleted, setDeleted] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   const [products,setProducts]=useState([
@@ -31,15 +35,15 @@ export default function ProductList() {
   useEffect(()=>{
     async function readData() {
       setIsLoading(true);
-      //const querySnapshot = await getDocs(collection(db, "product"));
-      const querySnapshot = await getDocs(query(collection(db, "product"), orderBy("desc")));
+      const querySnapshot = await getDocs(collection(db, "product"));
+      //const querySnapshot = await getDocs(query(collection(db, "product"), orderBy("desc")));
       //const querySnapshot = getDocs(collection(db, "product"));
       const temp = [];
       querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
         //console.log(doc);
-        console.log(doc.id, " => ", doc.data());
-        temp.push({desc:doc.data().desc, price:doc.data().price});
+        //console.log(doc.id, " => ", doc.data());
+        temp.push({id:doc.id, desc:doc.data().desc, price:doc.data().price});
       
       });
       console.log(temp);
@@ -47,10 +51,24 @@ export default function ProductList() {
       setIsLoading(false);
     }
     readData();
-  },[db, open]);
+  },[db, open, deleted]);
 
   const close = function(){
     setOpen(false);
+  }
+  const deleteData = async function(id){
+    try{
+      setIsLoading(true);
+      await deleteDoc(doc(db, "product", id));
+      console.log("deleted");
+      setDeleted(deleted+1);
+      setIsLoading(false);
+    }
+    catch (error){
+      console.log(error);
+    }
+    
+
   }
   
 /*
@@ -77,6 +95,9 @@ useEffect(readData
       {products.map((product, index) => 
         <ListItem divider key={index}>
           <ListItemText primary={product.desc} secondary={"NT$"+product.price}></ListItemText>
+          <IconButton edge="end" aria-label="delete" onClick={()=>deleteData(product.id)}>
+            <DeleteIcon />
+          </IconButton>
         </ListItem>)}
       </List>
     )
