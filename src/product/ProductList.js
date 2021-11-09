@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Box, Button, CircularProgress, IconButton, List, ListItem, ListItemText } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import {Edit as EditIcon, Delete as DeleteIcon} from '@mui/icons-material';
 import { getApp, getApps,initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { deleteDoc, doc } from "firebase/firestore";
@@ -8,7 +8,7 @@ import { deleteDoc, doc } from "firebase/firestore";
 
 import {config} from '../settings/firebaseConfig';
 import AppMenu from '../ui/AppMenu';
-import ProductAdd from '../product/ProductAdd';
+import ProductAddEdit from '../product/ProductAddEdit';
 //import { ThemeProvider } from '@emotion/react';
 export default function ProductList() {
   //const firebaseApp = initializeApp(config);
@@ -24,6 +24,7 @@ export default function ProductList() {
     {desc:"iPhone X", price:30000},
    ]);
   
+   const [currentProduct, setCurrentProduct] =useState({desc:"",price:0});
  /* 
   const products=[
     {desc:"iPad", price:20000},
@@ -56,6 +57,16 @@ export default function ProductList() {
   const close = function(){
     setOpen(false);
   }
+
+  const addData = async function(){
+    setCurrentProduct({desc:"",price:0});
+    setOpen(true);
+  }
+  const editData = async function(index){
+    setCurrentProduct(products[index]);
+    setOpen(true);
+  }
+
   const deleteData = async function(id){
     try{
       setIsLoading(true);
@@ -66,9 +77,7 @@ export default function ProductList() {
     }
     catch (error){
       console.log(error);
-    }
-    
-
+    }   
   }
   
 /*
@@ -95,6 +104,9 @@ useEffect(readData
       {products.map((product, index) => 
         <ListItem divider key={index}>
           <ListItemText primary={product.desc} secondary={"NT$"+product.price}></ListItemText>
+          <IconButton edge="end" aria-label="edit" onClick={()=>editData(index)}>
+            <EditIcon />
+          </IconButton>
           <IconButton edge="end" aria-label="delete" onClick={()=>deleteData(product.id)}>
             <DeleteIcon />
           </IconButton>
@@ -117,8 +129,8 @@ useEffect(readData
       <CircularProgress />
       }
       
-      <Button variant="contained" color="primary" onClick={()=>{setOpen(true)}}>新增</Button>
-      <ProductAdd open={open} close={close}/>
+      <Button variant="contained" color="primary" onClick={addData}>新增</Button>
+      <ProductAddEdit open={open} close={close} product={currentProduct}/>
     </Box>
 
   );
