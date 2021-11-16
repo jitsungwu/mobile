@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Button, TextField} from '@mui/material';
 import { getApps, initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
 import {config} from '../settings/firebaseConfig';
 
 //import { Box } from '@mui/system';
@@ -18,10 +18,13 @@ export default function SignUp() {
   const handleSubmit = async function(){
     try {
       const auth = getAuth();
-      const res = await createUserWithEmailAndPassword(auth, account.email, account.password)
+      const res = await createUserWithEmailAndPassword(auth, account.email, account.password);
+      //console.log(res);
       if (res) {
-        res.user.updateProfile({displayName: account.displayName});
+        //console.log(res.user);
+        updateProfile(auth.currentUser,{displayName: account.displayName});
       }
+      setMessage("");
 
     }
     catch(error){
