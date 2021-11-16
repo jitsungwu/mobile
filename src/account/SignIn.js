@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {Button, TextField} from '@mui/material';
 import { getApps, initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {config} from '../settings/firebaseConfig';
 
 //import { Box } from '@mui/system';
 
-export default function SignUp(props) {
+export default function SignIn(props) {
   if (getApps().length===0) {
     initializeApp(config);
   }
@@ -18,11 +18,12 @@ export default function SignUp(props) {
   const handleSubmit = async function(){
     try {
       const auth = getAuth();
-      const res = await createUserWithEmailAndPassword(auth, account.email, account.password);
+      const res = await signInWithEmailAndPassword(auth, account.email, account.password);
       //console.log(res);
       if (res) {
-        //console.log(res.user);
-        await updateProfile(auth.currentUser,{displayName: account.displayName});
+        console.log(auth.currentUser.displayName);
+        props.setStatus("signedIn");
+        //updateProfile(auth.currentUser,{displayName: account.displayName});
       }
       setMessage("");
 
@@ -32,21 +33,19 @@ export default function SignUp(props) {
     }
   }
   const changeStatus = function(){
-    props.setStatus("signIn");
+    props.setStatus("signUp");
   }
   
   return(
     
     <form>
-      <TextField type = "text" name = "displayName" value={account.displayName} 
-        placeholder="姓名" label="姓名:" onChange={handleChange} /><br/>
       <TextField type = "email" name = "email" value={account.email} 
         placeholder="電子郵件信箱" label="電子郵件信箱:" onChange={handleChange} autoComplete="email"/><br/>
       <TextField type = "password" name = "password" value={account.password}
         placeholder="密碼" label="密碼:" onChange={handleChange} autoComplete="current-password"/><br/>
       {message}<br/>
-      <Button variant="contained" color="primary" onClick={handleSubmit}>註冊</Button>
-      <Button variant="contained" color="secondary" onClick={changeStatus}>已經註冊，我要登入</Button>
+      <Button variant="contained" color="primary" onClick={handleSubmit}>登入</Button>
+      <Button variant="contained" color="secondary" onClick={changeStatus}>我要註冊</Button>
     </form>
     
   )

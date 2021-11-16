@@ -7,6 +7,7 @@ export default function ProductAddEdit(props) {
   const [product, setProduct] = useState({
     desc:"",
     price:0});
+  const [message, setMessage] = useState("");  
 
   useEffect(()=>setProduct({...props.product}),[props.product]);
 
@@ -22,6 +23,7 @@ export default function ProductAddEdit(props) {
 
   const update = async function(){
     const db = getFirestore();
+    setMessage("");
     try{
       if (action === "新增"){
         const docRef = await addDoc(collection(db,"product"),{
@@ -36,11 +38,15 @@ export default function ProductAddEdit(props) {
           price:parseInt(product.price)
         });
       }
+      props.close();
     }
     catch(e){
-      console.log(e);
+      console.log(e.code);
+      if (e.code==="permission-denied"){
+        setMessage("尚未登入!!");
+      }
     }
-    props.close();
+
   }
 
   return (
@@ -49,6 +55,7 @@ export default function ProductAddEdit(props) {
       <DialogContent>
         <TextField label ="產品描述" name ="desc" variant="outlined" value={product.desc} onChange={handleChange}/>
         <TextField label ="產品價格" type="number" name ="price" variant="outlined" value={product.price} onChange={handleChange}/>
+        {message}
       </DialogContent>
       <DialogActions>
         <Button variant="contained" color="primary" onClick={update}>{action}</Button>
