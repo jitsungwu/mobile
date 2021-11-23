@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import { Box, CircularProgress, Fab, IconButton, List, ListItem, ListItemText } from '@mui/material';
 import {Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon} from '@mui/icons-material';
 import { getApp, getApps,initializeApp } from "firebase/app";
@@ -8,11 +8,12 @@ import { deleteDoc, doc } from "firebase/firestore";
 
 import {config} from '../settings/firebaseConfig';
 import AppMenu from '../ui/AppMenu';
+import {AuthContext, STATUS} from '../account/AuthContext';
 import ProductAddEdit from '../product/ProductAddEdit';
-//import { ThemeProvider } from '@emotion/react';
+
 export default function ProductList() {
-  //const firebaseApp = initializeApp(config);
-  //initializeApp(config);
+  const authContext = useContext(AuthContext);
+
   getApps().length === 0 ? initializeApp(config) : getApp();
   const db = getFirestore();
   const [open, setOpen] = useState(false);
@@ -128,6 +129,8 @@ useEffect(readData
        :
       <CircularProgress />
       }
+      {(authContext.status===STATUS.toSignIn)?
+      <Box></Box>:
       <Fab color="primary" aria-label="新增" onClick={addData}
           sx={{
             position: "fixed",
@@ -136,7 +139,8 @@ useEffect(readData
           }}
           >
         <AddIcon />
-      </Fab> 
+      </Fab>
+      } 
       <ProductAddEdit open={open} close={close} product={currentProduct}/>
     </Box>
 

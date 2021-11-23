@@ -3,6 +3,8 @@ import {Button, TextField} from '@mui/material';
 import { getApps, initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
 import {config} from '../settings/firebaseConfig';
+import {useContext} from 'react';
+import {AuthContext, STATUS} from '../account/AuthContext';
 
 //import { Box } from '@mui/system';
 
@@ -10,6 +12,7 @@ export default function SignUp(props) {
   if (getApps().length===0) {
     initializeApp(config);
   }
+  const authContext = useContext(AuthContext);
   const [account, setAccount] = useState({email:"",password:"", displayName:""});
   const [message, setMessage] = useState("");
   const handleChange = function(e){
@@ -32,7 +35,7 @@ export default function SignUp(props) {
     }
   }
   const changeStatus = function(){
-    props.setStatus("signIn");
+    authContext.setStatus(STATUS.toSignIn);
   }
   
   return(

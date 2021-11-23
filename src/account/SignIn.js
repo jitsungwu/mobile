@@ -3,13 +3,16 @@ import {Button, TextField} from '@mui/material';
 import { getApps, initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {config} from '../settings/firebaseConfig';
+import {useContext} from 'react';
+import {AuthContext, STATUS} from '../account/AuthContext';
 
 //import { Box } from '@mui/system';
 
-export default function SignIn(props) {
+export default function SignIn() {
   if (getApps().length===0) {
     initializeApp(config);
   }
+  const authContext = useContext(AuthContext);
   const [account, setAccount] = useState({email:"",password:"", displayName:""});
   const [message, setMessage] = useState("");
   const handleChange = function(e){
@@ -21,11 +24,13 @@ export default function SignIn(props) {
       const res = await signInWithEmailAndPassword(auth, account.email, account.password);
       //console.log(res);
       if (res) {
-        console.log(auth.currentUser.displayName);
-        props.setStatus("signedIn");
+        //console.log(auth.currentUser.displayName);
+        setMessage("");//can't setMessage after setStatus
+        authContext.setStatus(STATUS.toSignOut);
+        
         //updateProfile(auth.currentUser,{displayName: account.displayName});
       }
-      setMessage("");
+      
 
     }
     catch(error){
@@ -33,7 +38,7 @@ export default function SignIn(props) {
     }
   }
   const changeStatus = function(){
-    props.setStatus("signUp");
+    authContext.setStatus(STATUS.toSignUp);
   }
   
   return(

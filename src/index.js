@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {HashRouter as Router, Switch, Route} from 'react-router-dom';
-import reportWebVitals from './reportWebVitals';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import ProductList from './product/ProductList';
-import EmployeeList from './employee/EmployeeList';
-import Main from './ui/Main';
+import reportWebVitals from './reportWebVitals';
+
+import AppRouter from './AppRouter';
+
 // theme
 const theme = createTheme({
   palette: {
@@ -21,14 +20,8 @@ const theme = createTheme({
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <Router>
-        <Switch>
-          <Route path="/product" component={ProductList}/>
-          <Route path="/employee" component={EmployeeList}/>
-          <Route path="/" component={Main}/>
-        </Switch>
-      </Router>
-    </ThemeProvider>
+      <AppRouter/>
+    </ThemeProvider>  
   </React.StrictMode>,
   document.getElementById('root')
 );
