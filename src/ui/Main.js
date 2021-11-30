@@ -8,6 +8,7 @@ import SignIn from '../account/SignIn';
 import SignOut from '../account/SignOut';
 import {useContext} from 'react';
 import {AuthContext, STATUS} from '../account/AuthContext';
+import ImageUpload from './ImageUpload';
 
 
 export default function Main() {
@@ -28,7 +29,8 @@ export default function Main() {
       <SignIn/>
       :
       <SignOut/>
-      }    
+      }
+    <ImageUpload/>
     </Box>
   )
 
