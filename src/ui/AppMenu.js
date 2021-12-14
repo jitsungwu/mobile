@@ -20,6 +20,7 @@ export default function AppMenu() {
       <Toolbar>
         <Button component={NavLink} to='/product' style={({isActive})=>setActiveStyle(isActive)} >product</Button>
         <Button component={NavLink} to='/employee' style={({isActive})=>setActiveStyle(isActive)}>employee</Button>
+        <Button component={NavLink} to='/image' style={({isActive})=>setActiveStyle(isActive)}>image</Button>
       </Toolbar>
     </AppBar>
   )

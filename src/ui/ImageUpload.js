@@ -8,6 +8,7 @@ export default function ImageUpload() {
   const storage = getStorage();
   const [message, setMessage] = useState("");
   const [images, setImages] = useState([]);
+  const [loaded, setLoaded] = useState(0); //add 1 when loaded
 
   
   const handleUpload = async function(e){
@@ -21,6 +22,7 @@ export default function ImageUpload() {
       console.log('Uploaded a blob or file!');
       const url = await getDownloadURL(imageRef);
       console.log(url);
+      setLoaded((currentValue)=>currentValue+1);
       
     }
     catch(error){
@@ -53,7 +55,7 @@ export default function ImageUpload() {
 
     }
     readImage();
-  },[storage]);
+  },[storage, loaded]);
 
   return (
     <Box>

@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
 import ProductList from './product/ProductList';
 import EmployeeList from './employee/EmployeeList';
+import ImageUpload from './ui/ImageUpload';
 import Main from './ui/Main';
 import {AuthContext, STATUS} from './account/AuthContext';
 
@@ -15,6 +16,8 @@ export default function AppRouter(){
           <Route path="/" element={<Main/>}/>
           <Route path="/product" element={<ProductList/>}/>
           <Route path="/employee" element={<EmployeeList/>}/>
+          <Route path="/image" element={<ImageUpload/>}/>
+
         </Routes>
       </Router>
     </AuthContext.Provider>
