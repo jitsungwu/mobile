@@ -4,6 +4,8 @@ import { listAll } from "firebase/storage";
 import {Box, Input} from '@mui/material';
 import {ImageList, ImageListItem} from '@mui/material';
 
+import AppMenu from "./AppMenu";
+
 export default function ImageUpload() {
   const storage = getStorage();
   const [message, setMessage] = useState("");
@@ -59,6 +61,7 @@ export default function ImageUpload() {
 
   return (
     <Box>
+      <AppMenu/>
       <Input type="file" accept="image/x-png,image/jpeg" onChange={handleUpload}/>
       <br/>{message}
       <ImageList sx={{ width: '100%', height: '100%' }} cols={2} rowHeight={164}>
